@@ -121,17 +121,27 @@ Error message and password prompt
 
 <li>$:/isEncrypted</li>
 
+<li>$:/state/showeditpreview</li>
+
 <li>$:/state/tab/sidebar--1835078512</li>
 
 <li>$:/StoryList</li>
 
 <li>$:/temp/info-plugin</li>
 
+<li>$:/temp/NewTagName</li>
+
 <li>$:/themes/tiddlywiki/snowwhite</li>
 
 <li>$:/themes/tiddlywiki/vanilla</li>
 
-<li>my tiddler 1b</li>
+<li>docker images from 11/01</li>
+
+<li>Docker-snippets</li>
+
+<li>mesos-marathon-config-example</li>
+
+<li>mesos-marathon-config-post</li>
 
 <li>New Tiddler</li>
 
@@ -5856,10 +5866,13 @@ Error message and password prompt
 <div title="$:/isEncrypted">
 <pre>no</pre>
 </div>
-<div modified="20151101230047898" title="$:/state/tab/sidebar--1835078512">
-<pre>$:/core/ui/SideBar/Recent</pre>
+<div modified="20151102003845634" title="$:/state/showeditpreview">
+<pre>yes</pre>
 </div>
-<div list="[[my tiddler 1b]] GettingStarted" title="$:/StoryList">
+<div modified="20151102004211274" title="$:/state/tab/sidebar--1835078512">
+<pre>$:/core/ui/SideBar/Tools</pre>
+</div>
+<div list="[[docker images from 11/01]] Docker-snippets mesos-marathon-config-post mesos-marathon-config-example GettingStarted" title="$:/StoryList">
 <pre></pre>
 </div>
 <div plugin-type="info" title="$:/temp/info-plugin" type="application/json">
@@ -5875,6 +5888,9 @@ Error message and password prompt
         }
     }
 }</pre>
+</div>
+<div created="20151102003442112" modified="20151102004111281" title="$:/temp/NewTagName">
+<pre></pre>
 </div>
 <div author="JeremyRuston" core-version="&gt;=5.0.0" dependents="$:/themes/tiddlywiki/vanilla" description="Emphasises individual tiddlers" name="Snow White" plugin-type="theme" title="$:/themes/tiddlywiki/snowwhite" type="application/json" version="5.1.9">
 <pre>{
@@ -5981,8 +5997,127 @@ Error message and password prompt
     }
 }</pre>
 </div>
-<div created="20151101225649515" modified="20151102001046664" tags="" title="my tiddler 1b">
-<pre></pre>
+<div created="20151102005809541" modified="20151102010028028" tags="" title="docker images from 11/01" type="text/vnd.tiddlywiki">
+<pre>&quot;&quot;&quot;
+REPOSITORY                                                TAG                 IMAGE ID            CREATED             VIRTUAL SIZE
+docker.permissiondata.com/services/melissa-address        feature-SER-173     fd27a879b4ec        6 weeks ago         2.418 GB
+docker.permissiondata.com/services/melissa-address-test   master              868d966d4e9a        7 weeks ago         2.832 GB
+progrium/busybox                                          latest              6245e5b140dc        11 weeks ago        4.79 MB
+alpine                                                    3.1                 878b6301beda        4 months ago        5.041 MB
+busybox                                                   latest              8c2e06607696        6 months ago        2.433 MB
+services/melissa                                          latest              8c2e06607696        6 months ago        2.433 MB
+atcol/docker-registry-ui                                  latest              d838355ad903        7 months ago        890.6 MB
+&quot;&quot;&quot;
+</pre>
+</div>
+<div created="20151102004625259" modified="20151102005312195" tags="" title="Docker-snippets">
+<pre>&quot;&quot;&quot;
+__remove containers__
+`docker rm $(docker ps -a -q)`
+&quot;&quot;&quot;
+
+&quot;&quot;&quot;
+__delete all images__
+`docker rmi $(docker images -q)`
+&quot;&quot;&quot;
+
+&quot;&quot;&quot;
+__build and run__
+`docker build -t services/melissa .`
+`docker run -i -t --rm -p 7011:7011 services/melissa`
+`docker run -i -t services/melissa /bin/bash`
+&quot;&quot;&quot;
+
+&quot;&quot;&quot;
+__attach__
+`docker exec -i -t 665b bash`
+&quot;&quot;&quot;
+
+&quot;&quot;&quot;
+__docker search__
+`docker.permissiondata.com/&lt;image tag&gt;
+eg: docker search `docker.permissiondata.com/_
+doesn’t show tags; defaults to 'latest'
+&quot;&quot;&quot;
+
+
+&quot;&quot;&quot;
+__pull__
+`docker pull -a foo`
+use “-a” to pull all tags; defaults to “latest”
+&quot;&quot;&quot;
+
+</pre>
+</div>
+<div created="20151101225649515" modified="20151102004136265" tags="mesos marathon" title="mesos-marathon-config-example" type="text/vnd.tiddlywiki">
+<pre>`{
+  &quot;id&quot;: &quot;melissa-address&quot;,
+  &quot;cpus&quot;: 0.5,
+  &quot;mem&quot;: 256,
+  &quot;instances&quot;: 1,
+  &quot;constraints&quot;: [[&quot;hostname&quot;, &quot;UNIQUE&quot;]],
+  &quot;acceptedResourceRoles&quot;: [&quot;slave_public&quot;],
+  &quot;uris&quot;: [
+    &quot;http://52.7.193.36/auth/.dockercfg&quot;
+  ],
+  &quot;container&quot;: {
+    &quot;type&quot;: &quot;DOCKER&quot;,
+    &quot;docker&quot;: {
+      &quot;image&quot;: &quot;docker.permissiondata.com/services/melissa-address:dev&quot;,
+      &quot;forcePullImage&quot;: true,
+      &quot;parameters&quot;: [
+        { &quot;key&quot;: &quot;env&quot;, &quot;value&quot;: &quot;APP_NAME=dev-melissa-address&quot; },
+        
+        { &quot;key&quot;: &quot;env&quot;, &quot;value&quot;: &quot;MELISSA_DATAFOLDER=/melissa/data&quot; },
+        { &quot;key&quot;: &quot;env&quot;, &quot;value&quot;: &quot;MELISSA_LICENSEENVVARNAME=MD_LICENSE&quot; },
+        { &quot;key&quot;: &quot;env&quot;, &quot;value&quot;: &quot;MELISSA_LICENSEENVVARVALUE=XXX==&quot; },//TODO: modify
+        { &quot;key&quot;: &quot;env&quot;, &quot;value&quot;: &quot;MELISSA_CACHEENVVARNAME=MDADDR_SERVERMODE&quot; },
+        { &quot;key&quot;: &quot;env&quot;, &quot;value&quot;: &quot;MELISSA_CACHEENVVARVALUE=sticky&quot; },
+        { &quot;key&quot;: &quot;env&quot;, &quot;value&quot;: &quot;MELISSA_ADDRESSMINPOOLSIZE=10&quot; },
+        { &quot;key&quot;: &quot;env&quot;, &quot;value&quot;: &quot;MELISSA_ADDRESSMAXPOOLSIZE=100&quot; },
+        { &quot;key&quot;: &quot;env&quot;, &quot;value&quot;: &quot;MELISSA_ZIPMINPOOLSIZE=10&quot; },
+        { &quot;key&quot;: &quot;env&quot;, &quot;value&quot;: &quot;MELISSA_ZIPMAXPOOLSIZE=100&quot; },
+        { &quot;key&quot;: &quot;env&quot;, &quot;value&quot;: &quot;MELISSA_PARSEMINPOOLSIZE=10&quot; },
+        { &quot;key&quot;: &quot;env&quot;, &quot;value&quot;: &quot;MELISSA_PARSEMAXPOOLSIZE=100&quot; },
+
+        { &quot;key&quot;: &quot;env&quot;, &quot;value&quot;: &quot;SERVER_IP=0.0.0.0&quot; },
+        { &quot;key&quot;: &quot;env&quot;, &quot;value&quot;: &quot;SERVER_PORT=7000&quot; },
+        { &quot;key&quot;: &quot;env&quot;, &quot;value&quot;: &quot;SERVER_TLSENABLED=false&quot; },
+        { &quot;key&quot;: &quot;env&quot;, &quot;value&quot;: &quot;SERVER_TLSCERTFILE=&quot; },
+        { &quot;key&quot;: &quot;env&quot;, &quot;value&quot;: &quot;SERVER_TLSKEYFILE=&quot; },
+
+        { &quot;key&quot;: &quot;env&quot;, &quot;value&quot;: &quot;LOG_LEVEL=1&quot; },
+	      { &quot;key&quot;: &quot;env&quot;, &quot;value&quot;: &quot;LOG_PATH=/var/log/melissa-address/melissa-address.log&quot; }
+      ],
+      &quot;network&quot;: &quot;BRIDGE&quot;,
+      &quot;portMappings&quot;: [
+        { &quot;containerPort&quot;: 7000, &quot;hostPort&quot;: 0, &quot;servicePort&quot;: 0, &quot;protocol&quot;: &quot;tcp&quot; }
+      ]
+    },
+    &quot;volumes&quot;: [
+      {
+        &quot;containerPath&quot;: &quot;/var/log/melissa-address&quot;,
+        &quot;hostPath&quot;: &quot;/var/log/melissa-address&quot;,
+        &quot;mode&quot;: &quot;RW&quot;
+      }
+    ]
+  },
+  &quot;cmd&quot;:&quot;/main -config-file-path=''&quot;,
+  &quot;healthChecks&quot;: [{
+      &quot;protocol&quot;: &quot;TCP&quot;,
+      &quot;gracePeriodSeconds&quot;: 600,
+      &quot;intervalSeconds&quot;: 30,
+      &quot;portIndex&quot;: 0,
+      &quot;timeoutSeconds&quot;: 10,
+      &quot;maxConsecutiveFailures&quot;: 2
+  }]
+}`
+
+
+</pre>
+</div>
+<div created="20151102004041312" modified="20151102004121281" tags="mesos marathon" title="mesos-marathon-config-post">
+<pre>`curl -X POST -d @&lt;path to json file&gt; http://dev-elasticloadbal-1m666yqnpimqj-1899406353.us-east-1.elb.amazonaws.com/service/marathon/v2/apps/ --header &quot;Content-Type:application/json&quot;`</pre>
 </div>
 <div created="20151101225908531" modified="20151101225910865" tags="" title="New Tiddler">
 <pre></pre>
